@@ -75,7 +75,15 @@
                 <div class="title m-b-md">
                     Laravel HOME PAGE
                 </div>
+
+                <ul>
+                    @foreach ($tasks as $task)
+                        <li>{{ $task->body }}</li>    
+                    @endforeach
+                </ul>
             </div>
+
+            <div id="app"></div>
         </div>
     </body>
 </html>
