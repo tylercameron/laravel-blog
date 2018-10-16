@@ -3,16 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Comment;
 use App\Post;
 
-class PostsController extends Controller
+class CommentsController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('auth')->except(['index', 'show']);
-    }
-    
     /**
      * Display a listing of the resource.
      *
@@ -20,10 +15,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
-
-        // return view('posts.index', compact('posts'));
-        return view(('posts.index'))->withPosts($posts);
+        //
     }
 
     /**
@@ -34,7 +26,6 @@ class PostsController extends Controller
     public function create()
     {
         //
-        return view('posts.create');
     }
 
     /**
@@ -43,22 +34,19 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(Post $post)
     {
-        $this->validate(request(), [
-            'title' => 'required',
-            'body' => 'required'
-        ]);
+        $this->validate(request(), ['body' => 'required|min:2']);
+        
+        $post->addComment(request('body'), auth()->id());
 
-        auth()->user()->publish(new Post(request(['title', 'body'])));
-        // above is same as below, but need to add helper function in model
-        // Post::create([
-        //     'title' => request('title'),
+        // Comment::create([
         //     'body' => request('body'),
+        //     'post_id' => $post->id,
         //     'user_id' => auth()->id()
-        // ]);        
+        // ]);
 
-        return redirect('/posts');
+        return back();
     }
 
     /**
@@ -67,9 +55,9 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
-    {        
-        return view('posts.show', compact('post'));
+    public function show($id)
+    {
+        //
     }
 
     /**
