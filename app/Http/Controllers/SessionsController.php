@@ -28,11 +28,11 @@ class SessionsController extends Controller
         //     ]);
         // }
 
-        dd($credentials);
+        // dd($credentials);
         if (Auth::attempt($credentials)) {
             // Authentication passed...
             // return redirect()->intended('dashboard');
-            return redirect('/posts');
+            return redirect('/');
         }
 
 

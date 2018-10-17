@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 use App\User;
 
@@ -22,8 +23,12 @@ class RegistrationController extends Controller
             'email' => 'required|email',
             'password' => 'required|confirmed'
         ]);
-
-        $user = User::create(request(['name', 'email', 'password']));
+        
+        $user = User::create([
+            'name' => request('name'),
+            'email' => request('email'),
+            'password' => bcrypt(request('password'))
+        ]);
 
         auth()->login($user);
 
